@@ -1,0 +1,109 @@
+onSuccess1(imageData: string) {
+  let image: string = 'data:image/jpeg;base64,' + imageData;
+  let fileName: string = 'identityCard.jpeg';
+  if (typeof cordova !== 'undefined' && cordova.file) {
+    const path = cordova.file.externalDataDirectory + 'images/'; // Ubah path sesuai kebutuhan
+    window.resolveLocalFileSystemURL(path, (dir: any) => {
+      dir.getFile(fileName, { create: true }, (fileEntry: any) => {
+        fileEntry.createWriter((fileWriter: any) => {
+          fileWriter.onwriteend = () => {
+            var reader = new FileReader();
+            reader.onloadend = () => {
+              if (reader.result) {
+                var blob = new Blob([reader.result], { type: "image/jpeg" });
+                this.identityCardData = image;
+                this.identityCardFile = <File>blob;
+                let imgHtml = '<img src="' + image + '">';
+                const container = document.getElementById('imageContainer1');
+                if (container) {
+                  container.innerHTML = imgHtml;
+                }
+              } else {
+                this.onFail('Failed to read file data.');
+              }
+            };
+            reader.readAsArrayBuffer(fileEntry);
+          };
+          fileWriter.onerror = (e: any) => {
+            this.onFail('Failed to write file.');
+          };
+          fileWriter.write(this.dataURLtoBlob(imageData));
+        });
+      }, (error: any) => {
+        this.onFail('Failed to get file.');
+      });
+    }, (error: any) => {
+      this.onFail('Failed to resolve data directory.');
+    });
+  } else {
+    let blob = this.dataURLtoBlob(imageData);
+    this.identityCardData = image;
+    this.identityCardFile = <File>blob;
+    let imgHtml = '<img src="' + image + '">';
+    const container = document.getElementById('imageContainer1');
+    if (container) {
+      container.innerHTML = imgHtml;
+    } else {
+      this.onFail('Failed to get image container.');
+    }
+  }
+}
+
+
+
+
+onSuccess2(imageData: string) {
+  let image: string = 'data:image/jpeg;base64,' + imageData;
+  let fileName: string = 'visitorPhotos.jpeg';
+  if (typeof cordova !== 'undefined' && cordova.file) {
+    window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory, (dir: any) => {
+      dir.getDirectory('images', { create: true }, (subDir: any) => {
+        subDir.getFile(fileName, { create: true }, (fileEntry: any) => {
+          fileEntry.createWriter((fileWriter: any) => {
+            fileWriter.onwriteend = () => {
+              var reader = new FileReader();
+              reader.onloadend = () => {
+                if (reader.result) {
+                  var blob = new Blob([reader.result], { type: "image/jpeg" });
+                  this.visitorPhotosData = image;
+                  this.visitorPhotosFile = <File>blob;
+                  let imgHtml = '<img src="' + image + '">';
+                  const container = document.getElementById('imageContainer2');
+                  if (container) {
+                    container.innerHTML = imgHtml;
+                  } else {
+                    this.onFail('Failed to get image container.');
+                  }
+                } else {
+                  this.onFail('Failed to read file data.');
+                }
+              };
+              reader.readAsArrayBuffer(fileEntry);
+            };
+            fileWriter.onerror = (e: any) => {
+              this.onFail('Failed to write file.');
+            };
+            fileWriter.write(this.dataURLtoBlob(imageData));
+          });
+        }, (error: any) => {
+          this.onFail('Failed to get file.');
+        });
+      }, (error: any) => {
+        this.onFail('Failed to create directory.');
+      });
+    }, (error: any) => {
+      this.onFail('Failed to resolve data directory.');
+    });
+  } else {
+    let blob = this.dataURLtoBlob(imageData);
+    this.identityCardData = image;
+    this.identityCardFile = <File>blob;
+    let imgHtml = '<img src="' + image + '">';
+    const container = document.getElementById('imageContainer2');
+    if (container) {
+      container.innerHTML = imgHtml;
+    } else {
+      this.onFail('Failed to get image container.');
+    }
+  }
+}

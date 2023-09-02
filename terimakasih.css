@@ -1,0 +1,21 @@
+.terimakasih{
+        border: 1px solid #979797;
+        border-radius: 5px;
+        margin-left: 180px;
+        margin-right: 180px;
+        display: block;
+        justify-content: center;
+        align-items: center; 
+        margin-top: 250px;
+}
+img{
+    margin-top: 30px;
+    margin-left:470px;
+ }   
+ label{
+    display: flex;
+    margin-top: 30px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px; 
+ }
